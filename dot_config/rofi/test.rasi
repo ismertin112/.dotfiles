@@ -1,0 +1,12 @@
+* {
+    background-color: SteelBlue;
+    text-color:       white;
+}
+window {
+    width: 30%;
+    background-color: Navy;
+}
+element selected {
+    background-color: LightCoral;
+    text-color:       black;
+}

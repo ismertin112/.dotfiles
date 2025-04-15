@@ -1,0 +1,75 @@
+
+[window]
+# Внутренние отступы окна (пиксели)
+
+# Декорации окна (рекомендуется "none" или "transparent" для Hyprland,
+# так как Hyprland рисует свои декорации, если они включены)
+decorations = "none" # Или "transparent"
+
+# Прозрачность фона (0.0 - полностью прозрачный, 1.0 - непрозрачный)
+# Используй, если хочешь эффект размытия/прозрачности от Hyprland
+opacity = 0.95 # Пример: легкая прозрачность
+
+# Размытие (требует включенного размытия в Hyprland)
+# blur = true # Раскомментируй, если хочешь включить
+
+[font]
+normal = { family = "Maple Mono NF", style = "Regular" }
+bold = { family = "Maple Mono NF", style = "Bold" }
+italic = { family = "Maple Mono NF", style = "Italic" }
+bold_italic = { family = "Maple Mono NF", style = "Bold Italic" }
+offset = { x = 0, y = 1 }
+
+# Размер шрифта
+size = 16.0
+
+# Смещение глифов (полезно для некоторых Nerd Fonts, если символы обрезаются)
+# glyph_offset = { x = 0, y = 1 } # Попробуй раскомментировать и настроить, если нужно
+
+[cursor]
+# Стиль курсора: Block, Beam, Underline
+style = { shape = "Block", blinking = "On" }
+
+# Показывать пустой курсор, когда окно не в фокусе
+unfocused_hollow = true
+
+[scrolling]
+# Количество строк истории для прокрутки
+history = 10000
+# Множитель скорости прокрутки (колесиком мыши)
+multiplier = 3
+# Укажи свой предпочитаемый shell, если он не стандартный /bin/bash или /bin/zsh
+# program = "/bin/fish"
+# args = ["-l"]
+
+# Привязки клавиш (Примеры)
+[keyboard]
+bindings = [
+	# Увеличение/уменьшение размера шрифта
+	{ key = "Equals", mods = "Control", action = "IncreaseFontSize" }, # Ctrl + =
+	{ key = "Minus", mods = "Control", action = "DecreaseFontSize" },  # Ctrl + -
+	{ key = "Key0", mods = "Control", action = "ResetFontSize" },      # Ctrl + 0
+
+	# Копирование/вставка (Alacritty использует системный буфер обмена по умолчанию,
+	# но можно переопределить, если нужно другое поведение)
+	# { key = "C", mods = "Control|Shift", action = "Copy" },
+	# { key = "V", mods = "Control|Shift", action = "Paste" },
+]
+
+# Настройки мыши (Пример)
+[mouse]
+# Скрывать курсор при вводе текста
+hide_when_typing = true
+
+[general]
+# ~/.config/alacritty/alacritty.toml
+
+# Импортируем основную тему Catppuccin Mocha
+# Убедись, что путь правильный, в зависимости от того, куда ты сохранил/склонировал тему
+import = [
+	"~/.config/alacritty/catppuccin-alacritty-theme/catppuccin-mocha.toml",
+	# Если скачал отдельно:
+	# "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[terminal]
