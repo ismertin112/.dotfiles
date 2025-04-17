@@ -31,12 +31,10 @@ return {
 			"nvim-lua/plenary.nvim", -- ТОЛЬКО ОСНОВНАЯ ЗАВИСИМОСТЬ
 		},
 		config = function()
-			print("Minimal Telescope setup...")
 			-- Просто вызываем setup БЕЗ каких-либо опций
 			require("telescope").setup({
 				-- Пусто! Никаких defaults, pickers, extensions
 			})
-			print("Minimal Telescope setup finished.")
 			-- НЕ загружаем никаких расширений
 		end,
 	},
