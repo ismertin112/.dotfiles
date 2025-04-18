@@ -45,15 +45,15 @@ multiplier = 3
 # Привязки клавиш (Примеры)
 [keyboard]
 bindings = [
-	# Увеличение/уменьшение размера шрифта
-	{ key = "Equals", mods = "Control", action = "IncreaseFontSize" }, # Ctrl + =
-	{ key = "Minus", mods = "Control", action = "DecreaseFontSize" },  # Ctrl + -
-	{ key = "Key0", mods = "Control", action = "ResetFontSize" },      # Ctrl + 0
+  # Увеличение/уменьшение размера шрифта
+  { key = "Equals", mods = "Control", action = "IncreaseFontSize" }, # Ctrl + =
+  { key = "Minus", mods = "Control", action = "DecreaseFontSize" },  # Ctrl + -
+  { key = "Key0", mods = "Control", action = "ResetFontSize" },      # Ctrl + 0
 
-	# Копирование/вставка (Alacritty использует системный буфер обмена по умолчанию,
-	# но можно переопределить, если нужно другое поведение)
-	# { key = "C", mods = "Control|Shift", action = "Copy" },
-	# { key = "V", mods = "Control|Shift", action = "Paste" },
+  # Копирование/вставка (Alacritty использует системный буфер обмена по умолчанию,
+  # но можно переопределить, если нужно другое поведение)
+  # { key = "C", mods = "Control|Shift", action = "Copy" },
+  # { key = "V", mods = "Control|Shift", action = "Paste" },
 ]
 
 # Настройки мыши (Пример)
@@ -67,9 +67,9 @@ hide_when_typing = true
 # Импортируем основную тему Catppuccin Mocha
 # Убедись, что путь правильный, в зависимости от того, куда ты сохранил/склонировал тему
 import = [
-	"~/.config/alacritty/catppuccin-alacritty-theme/catppuccin-mocha.toml",
-	# Если скачал отдельно:
-	# "~/.config/alacritty/catppuccin-mocha.toml"
+  "~/.config/alacritty/catppuccin-alacritty-theme/catppuccin-mocha.toml",
+  # Если скачал отдельно:
+  # "~/.config/alacritty/catppuccin-mocha.toml"
 ]
 
 [terminal]
