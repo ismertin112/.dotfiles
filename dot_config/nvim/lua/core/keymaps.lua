@@ -1,139 +1,115 @@
--- lua/core/keymaps.lua
+-- lua/core/keymaps.lua Настройка горячих клавиш
+
+vim.g.mapleader = " " -- пробел как глобальный лидер
+vim.g.maplocalleader = "\\" -- бэкслэш как локальный лидер
 
 local map = vim.keymap.set
 local default_opts = { noremap = true, silent = true }
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 
--- =============================================================================
--- Режим: Normal Mode (n)
--- =============================================================================
+-- *** NORMAL mode ***
 
--- Сохранение (Ctrl+S) - ОСТАВИТЬ, полезно
-map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
-map("v", "y", '"+y', { desc = "Yank to system clipboard", noremap = true, silent = true })
+-- Сохранение файла (Ctrl+S)
+map({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Сохранить файл", silent = true })
 
--- Навигация по окнам (<C-hjkl>) - ОСТАВИТЬ, стандартная и удобная
-map("n", "<C-h>", "<C-w>h", { desc = "Окно слева", noremap = true })
-map("n", "<C-j>", "<C-w>j", { desc = "Окно снизу", noremap = true })
-map("n", "<C-k>", "<C-w>k", { desc = "Окно сверху", noremap = true })
-map("n", "<C-l>", "<C-w>l", { desc = "Окно справа", noremap = true })
+-- Буфер обмена (копирование выделенного в системный буфер)
+map("v", "y", '"+y', { desc = "Копировать в системный буфер", noremap = true, silent = true })
 
--- Управление окнами (<leader>w...) - ОСТАВИТЬ, базовые операции с окнами
-map("n", "<leader>wv", "<C-w>v", { desc = "Сплит вертикально", noremap = true })
-map("n", "<leader>wh", "<C-w>s", { desc = "Сплит горизонтально", noremap = true })
-map("n", "<leader>wq", "<C-w>q", { desc = "Закрыть окно", noremap = true }) -- Закрыть текущее окно
-map("n", "<leader>wo", "<C-w>o", { desc = "Оставить только текущее окно", noremap = true })
+-- Навигация по окнам (Ctrl + hjkl)
+map("n", "<C-h>", "<C-w>h", { desc = "К окно слева", noremap = true })
+map("n", "<C-j>", "<C-w>j", { desc = "К окно снизу", noremap = true })
+map("n", "<C-k>", "<C-w>k", { desc = "К окно сверху", noremap = true })
+map("n", "<C-l>", "<C-w>l", { desc = "К окно справа", noremap = true })
 
--- Сохранение и выход (<leader>w, <leader>q, <leader>Q) - ОСТАВИТЬ, базовые команды
-map("n", "<leader>w", ":write<CR>", { desc = "Сохранить", noremap = true, silent = true })
+-- Управление окнами (<leader>w...)
+map("n", "<leader>wv", "<C-w>v", { desc = "Вертикальный сплит", noremap = true })
+map("n", "<leader>wh", "<C-w>s", { desc = "Горизонтальный сплит", noremap = true })
+map("n", "<leader>wq", "<C-w>q", { desc = "Закрыть окно", noremap = true })
+map("n", "<leader>wo", "<C-w>o", { desc = "Закрыть остальные окна", noremap = true })
+
+-- Сохранение и выход (<leader>w, <leader>q, <leader>Q)
+map("n", "<leader>w", "<cmd>w<CR>", { desc = "Сохранить файл", noremap = true, silent = true })
+map("n", "<leader>q", "<cmd>q<CR>", { desc = "Выйти", noremap = true, silent = true })
 map(
 	"n",
-	"<leader>q",
-	":quit<CR>",
-	{ desc = "Выйти (если нет изменений)", noremap = true, silent = true }
+	"<leader>Q",
+	"<cmd>qall!<CR>",
+	{ desc = "Выйти без сохранения", noremap = true, silent = true }
 )
-map("n", "<leader>Q", ":qall!<CR>", { desc = "Выйти без сохранения", noremap = true, silent = true }) -- Будьте осторожны с этой!
 
--- --- Плагины ---
+-- Поиск и открытие (Fuzzy Finder via fzf-lua)
+-- (См. привязки <leader>ff, fg, fb... в конфигурации плагина fzf-lua)
 
--- Telescope (<leader>f...) - ОСТАВИТЬ, это мощный поиск, вероятно, нужен
-local builtin = require("telescope.builtin")
-map("n", "<leader>ff", builtin.find_files, { desc = "Поиск файлов", noremap = true, silent = true })
-map("n", "<leader>fg", builtin.live_grep, { desc = "Поиск Grep", noremap = true, silent = true })
-map("n", "<leader>fb", builtin.buffers, { desc = "Поиск буферов", noremap = true, silent = true })
-map("n", "<leader>fh", builtin.help_tags, { desc = "Поиск Help", noremap = true, silent = true })
-map(
-	"n",
-	"<leader>fo",
-	builtin.oldfiles,
-	{ desc = "Поиск недавних файлов", noremap = true, silent = true }
-)
-map("n", "<leader>fk", builtin.keymaps, { desc = "Поиск кейбиндов", noremap = true, silent = true }) -- Полезно для отладки биндов
+-- LSP: базовые функции (задаются при подключении LSP-сервера в on_attach)
+-- (hover, goto definition, etc. см. plugins/mason.lua)
 
--- Trouble (<leader>x...) - МОЖНО УДАЛИТЬ, если вы не пользуетесь Trouble для просмотра ошибок/диагностики
--- map("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { desc = "Trouble Toggle", silent = true })
--- map("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", { desc = "Workspace Diagnostics", silent = true })
--- map("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", { desc = "Document Diagnostics", silent = true })
--- map("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { desc = "LSP References (Trouble)", silent = true }) -- gR может конфликтовать с gr из LSP
+-- *** INSERT mode ***
 
--- LSP (основные действия: K, gd, gD, gi, go, gr, <leader>d, [d, ]d) - ОСТАВИТЬ, это ключевые функции LSP
-local lsp_opts = { noremap = true, silent = true }
-map("n", "K", vim.lsp.buf.hover, lsp_opts)
-map("n", "gd", vim.lsp.buf.definition, lsp_opts)
-map("n", "gD", vim.lsp.buf.declaration, lsp_opts) -- Часто можно обойтись без gD, если gd хватает
-map("n", "gi", vim.lsp.buf.implementation, lsp_opts)
-map("n", "go", vim.lsp.buf.type_definition, lsp_opts) -- Можно убрать, если редко нужно
-map("n", "gr", vim.lsp.buf.references, lsp_opts)
-map("n", "<leader>d", vim.diagnostic.open_float, lsp_opts) -- Показать ошибку под курсором
-map("n", "[d", vim.diagnostic.goto_prev, lsp_opts) -- К предыдущей ошибке
-map("n", "]d", vim.diagnostic.goto_next, lsp_opts) -- К следующей ошибке
+-- Быстрый выход из режима вставки (jk или kj)
+map("i", "jk", "<ESC>", { desc = "Выход из режима вставки", noremap = true, silent = true })
+map("i", "kj", "<ESC>", { desc = "Выход из режима вставки", noremap = true, silent = true })
 
--- LSP Code Actions (<leader>ca) - ОСТАВИТЬ, очень полезно для рефакторинга, импортов и т.д.
-map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, lsp_opts)
+-- trouble
 
--- LSP Rename (<leader>rn) - ОСТАВИТЬ, переименование важно
-map("n", "<leader>rn", "<cmd>IncRename<CR>", { desc = "Incremental Rename", silent = true })
+map("n", "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", { desc = "Document diagnostics" })
+map("n", "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", { desc = "Workspace diagnostics" })
+map("n", "<leader>xr", "<cmd>TroubleToggle lsp_references<cr>", { desc = "LSP references" })
+map("n", "<leader>xt", "<cmd>TodoTrouble<cr>", { desc = "TODOs in Trouble" }) -- если используешь todo-comments
+-- nvim-cmp (автодополнение)
+-- (Привязки Tab/S-Tab настроены в конфигурации cmp.lua)
+-- Codeium
 
--- Форматирование (<leader>f) - УДАЛИТЬ, так как форматируете при сохранении
--- map({ "n", "v" }, "<leader>f", function()
---  require("conform").format({ async = true, lsp_fallback = true })
--- end, { desc = "Форматировать буфер", silent = true })
+-- Принять предложение
+map("i", "<C-Tab>", function()
+	return vim.fn["codeium#Accept"]()
+end, {
+	expr = true,
+	desc = "Codeium Accept Suggestion",
+})
 
--- Линтинг (<leader>ll) - МОЖНО УДАЛИТЬ, если линтер запускается автоматически (например, при сохранении или через LSP)
--- map("n", "<leader>ll", function()
---  require("lint").try_lint()
--- end, { desc = "Запустить линтер", silent = true })
+-- Следующее предложение
+map("i", "<M-]>", function()
+	return vim.fn
+end, {
+	expr = true,
+	desc = "Codeium Next Suggestion",
+})
 
--- Symbols Outline (<leader>o) - МОЖНО УДАЛИТЬ, если не пользуетесь обзором символов
--- map("n", "<leader>o", "<cmd>SymbolsOutline<CR>", { desc = "Структура кода", silent = true })
+-- Предыдущее предложение
+map("i", "<M-[>", function()
+	return vim.fn["codeium#CycleCompletions"](-1)
+end, {
+	expr = true,
+	desc = "Codeium Prev Suggestion",
+})
 
--- Todo Comments (]t, [t) - МОЖНО УДАЛИТЬ, если не используете todo-comments активно
--- map("n", "]t", function() require("todo-comments").jump_next() end, { desc = "След. TODO коммент", silent = true })
--- map("n", "[t", function() require("todo-comments").jump_prev() end, { desc = "Пред. TODO коммент", silent = true })
+-- Отклонить
+map("i", "<C-x>", function()
+	return vim.fn["codeium#Clear"]()
+end, {
+	expr = true,
+	desc = "Codeium Clear Suggestion",
+})
 
--- Git (Diffview, Neogit) - УДАЛИТЬ, если не используете эти плагины
--- map("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { desc = "Git Diff View", silent = true })
--- map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { desc = "Git File History", silent = true })
--- map("n", "<leader>gg", "<cmd>Neogit<CR>", { desc = "Neogit", silent = true })
+-- Используем Ctrl+j/Ctrl+k для навигации, Enter для подтверждения (см. plugins/cmp.lua)
 
--- =============================================================================
--- Режим: Insert Mode (i)
--- =============================================================================
+map("n", "<leader>o", "<cmd>AerialToggle<cr>", { desc = "Toggle outline (Aerial)" })
+map("n", "<leader>O", "<cmd>AerialNavToggle<cr>", { desc = "Toggle nav window" })
+-- *** VISUAL mode ***
 
--- Быстрый выход из Insert Mode (jk, kj) - ОСТАВИТЬ, популярно и удобно
-map("i", "jk", "<ESC>", { desc = "Выход из Insert", noremap = true, silent = true })
-map("i", "kj", "<ESC>", { desc = "Выход из Insert", noremap = true, silent = true })
-
--- --- nvim-cmp (Автодополнение) --- - ОСТАВИТЬ, критически важно для автодополнения
-local cmp = require("cmp")
-map("i", "<C-k>", cmp.mapping.select_prev_item(), { behavior = cmp.SelectBehavior.Select })
-map("i", "<C-j>", cmp.mapping.select_next_item(), { behavior = cmp.SelectBehavior.Select })
-map(
-	"i",
-	"<CR>",
-	cmp.mapping.confirm({ select = true }),
-	{ desc = "Подтвердить автодополнение" }
-)
-map("i", "<C-Space>", cmp.mapping.complete(), { desc = "Показать автодополнение" })
-map("i", "<C-e>", cmp.mapping.abort(), { desc = "Закрыть автодополнение" })
--- Tab / S-Tab должны настраиваться в конфигурации cmp/luasnip
-
--- =============================================================================
--- Режим: Visual Mode (v)
--- =============================================================================
-
--- Отступы (>, <) - ОСТАВИТЬ, стандартные и нужные
+-- Быстрая настройка отступов (выделение и > / <)
 map("v", ">", ">gv", { desc = "Увеличить отступ", noremap = true, silent = true })
 map("v", "<", "<gv", { desc = "Уменьшить отступ", noremap = true, silent = true })
 
--- Перемещение строк (J, K) - МОЖНО УДАЛИТЬ, если не пользуетесь активно
--- map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Переместить вниз", noremap = true, silent = true })
--- map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Переместить вверх", noremap = true, silent = true })
-
--- =============================================================================
--- Режим: Command Mode (c)
--- =============================================================================
--- Оставить пустым, если нет специфичных нужд
-
-print("Keymaps loaded successfully!")
+vim.keymap.set("n", "<leader>tt", function()
+	require("neotest").run.run()
+end, { desc = "Run nearest test" })
+vim.keymap.set("n", "<leader>tf", function()
+	require("neotest").run.run(vim.fn.expand("%"))
+end, { desc = "Run current file tests" })
+vim.keymap.set("n", "<leader>to", function()
+	require("neotest").output.open({ enter = true })
+end, { desc = "Open test output" })
+vim.keymap.set("n", "<leader>ts", function()
+	require("neotest").summary.toggle()
+end, { desc = "Toggle test summary" })
+-- (Опционально: перемещение выделенных строк клавишами J/K)

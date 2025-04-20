@@ -6,16 +6,16 @@
 
 // define colors etc.
 * {
-    bg: #24283b;
-    hv: #9274ca;
-    primary: #C5C8C6;
-    ug: #0B2447;
-    font: "Monospace 11";
+    bg: #1a1b26;
+    hv: #7aa2f7;
+    primary: #a9b1d6;
+    ug: #1a1b26;
+    font: "Maple Mono NF 14";
     background-color: @bg;
     //dark: @bg;
     border: 0px;
     kl: #7aa2f7;
-    black: #000000;
+    black: #1a1b26;
 
     transparent: rgba(46,52,64,0);
 }
@@ -80,7 +80,7 @@ listview {
     border: 0px 3px 3px 3px;
     border-radius: 0px 0px 6px 6px;
     border-color: @primary;
-    dynamic: false;
+    dynamic: true;
 }
 
 element {
@@ -97,9 +97,11 @@ element-text {
 }
 
 element selected.normal {
-    color: @black;
-    background-color: @hv;
+  background-color: @hv;
+  text-color: @bg;
+  border-radius: 4px;
 }
+
 
 element normal active {
     background-color: @hv;

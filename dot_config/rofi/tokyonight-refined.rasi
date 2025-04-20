@@ -1,0 +1,127 @@
+/* ~/.config/rofi/themes/tokyonight-refined.rasi */
+
+* {
+  font: "Maple Mono NF 14";
+  bg:         #1a1b26;
+  bg-alt:     #16161e;
+  fg:         #c0caf5;
+  accent:     #7aa2f7;
+  hover:      #7dcfff;
+  border:     #414868;
+  red:        #f7768e;
+  green:      #9ece6a;
+  yellow:     #e0af68;
+
+  background-color: @bg;
+  text-color: @fg;
+  border: 0px;
+}
+
+window {
+  width: 640;
+  border: 2px;
+  border-color: @border;
+  border-radius: 8px;
+  location: center;
+  anchor: center;
+  background-color: rgba(26, 27, 38, 0.92);
+  children: [ mainbox ];
+}
+
+mainbox {
+  spacing: 0;
+  children: [ inputbar, message, listview ];
+}
+
+inputbar {
+  padding: 12px;
+  border: 2px;
+  border-radius: 6px 6px 0 0;
+  background-color: @bg-alt;
+  text-color: @fg;
+  border-color: @accent;
+}
+
+entry, prompt, case-indicator {
+  text-color: inherit;
+  background-color: inherit;
+  text-font: inherit;
+}
+
+entry {
+  placeholder: " Search...";
+  placeholder-color: @border;
+  cursor: text;
+}
+
+prompt {
+  margin: 0px 8px 0px 0px;
+  text-color: @accent;
+}
+
+listview {
+  padding: 10px;
+  border: 2px;
+  border-radius: 0 0 6px 6px;
+  border-color: @border;
+  background-color: transparent;
+  columns: 1;
+  lines: 8;
+  dynamic: true;
+  layout: vertical;
+  spacing: 6px;
+}
+
+element {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  text-color: @fg;
+  cursor: pointer;
+}
+
+
+
+element selected.normal {
+  background-color: @hover;
+  text-color: @bg;
+  border-radius: 6px;
+}
+
+element normal.urgent,
+element selected.urgent {
+  background-color: @red;
+  text-color: @accent;
+}
+
+element selected.active {
+  background-color: @green;
+  text-color: @accent;
+}
+
+element-icon {
+  size: 1.4em;
+  margin: 0 10px 0 0;
+  background-color: transparent;
+  text-color: inherit;
+}
+
+element-text {
+  vertical-align: 0.5;
+  text-color: inherit;
+}
+
+textbox {
+  padding: 8px 12px;
+  background-color: @bg-alt;
+  text-color: @fg;
+  border-radius: 6px;
+}
+
+message {
+  border: 0px;
+  padding: 8px;
+  background-color: @bg-alt;
+  text-color: @fg;
+  border-radius: 6px;
+}
