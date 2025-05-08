@@ -1,30 +1,48 @@
 #!/bin/bash
 
-# Папка с обоями
-WALLPAPER_DIR="$HOME/Загрузки/pack/"
+WALLPAPER_DIR="$HOME/Pictures"
+RAW_FILE="$WALLPAPER_DIR/waifu_raw.jpg"
+FINAL_FILE="$WALLPAPER_DIR/waifu.jpg"
 
-# Проверяем, существует ли папка
-if [ ! -d "$WALLPAPER_DIR" ]; then
-    echo "❌ Ошибка: папка $WALLPAPER_DIR не найдена!"
-    exit 1
-fi
+mkdir -p "$WALLPAPER_DIR"
 
-# Выбираем случайное изображение
-WALLPAPER=$(find "$WALLPAPER_DIR" -type f | shuf -n 1)
+# swww init
+swww query &>/dev/null || swww init
 
-# Проверяем, найден ли файл
-if [ -z "$WALLPAPER" ]; then
-    echo "❌ Ошибка: в папке нет изображений!"
-    exit 1
-fi
+NSFW="false"
+[[ "$1" == "--nsfw" ]] && NSFW="true"
 
-# Запускаем `swww`, если он ещё не работает
-if ! pgrep -x "swww-daemon" >/dev/null; then
-    swww init
-    sleep 1 # Даем `swww` запуститься
-fi
+TAGS=("waifu" "maid" "uniform")
+MAX_ATTEMPTS=10
+attempt=1
 
-# Меняем обои с плавным переходом
-swww img "$WALLPAPER" --transition-type fade --transition-duration 1
+while (( attempt <= MAX_ATTEMPTS )); do
+  RANDOM_TAG=${TAGS[$RANDOM % ${#TAGS[@]}]}
+  echo "🔄 Попытка $attempt/$MAX_ATTEMPTS | Тег: $RANDOM_TAG"
 
-echo "✅ Обои обновлены: $WALLPAPER"
+  URL=$(curl -s "https://api.waifu.im/search?included_tags=${RANDOM_TAG}&orientation=landscape&is_nsfw=${NSFW}" | jq -r '.images[0].url')
+
+  if [[ -z "$URL" || "$URL" == "null" ]]; then
+    echo "❌ Нет картинки, пробуем другой тег..."
+    ((attempt++))
+    continue
+  fi
+
+  curl -s -L -o "$RAW_FILE" "$URL"
+  [[ ! -f "$RAW_FILE" ]] && echo "❌ Не удалось скачать" && ((attempt++)) && continue
+
+  read WIDTH HEIGHT <<< $(identify -format "%w %h" "$RAW_FILE")
+  ASPECT=$(awk "BEGIN { printf \"%.2f\", $WIDTH / $HEIGHT }")
+  echo "ℹ️ Размер: ${WIDTH}x${HEIGHT}, соотношение: $ASPECT"
+
+  # Обработка
+  magick "$RAW_FILE" -resize 1920x1080^ -gravity center -extent 1920x1080 "$FINAL_FILE"
+
+  swww img "$FINAL_FILE" --transition-type grow --transition-fps 60
+
+  echo "✅ Установлена вайфу ($RANDOM_TAG): $URL"
+  exit 0
+done
+
+echo "❌ Не удалось найти подходящую вайфу после $MAX_ATTEMPTS попыток."
+exit 1
